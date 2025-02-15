@@ -57,17 +57,78 @@ BOT_1234567890=your_telegram_bot_token
 - Configure bot IDs
 - Define admin chat settings
 
-### 4. Database Setup
+### 4. Bot Configuration (`bot_data.yaml`)
+
+#### Overview
+
+The `bot_data.yaml` file is a crucial configuration file that allows you to customize bot behavior for each Telegram bot instance. This file uses the bot's numeric ID as the key and supports various configuration options.
+
+#### Configuration Structure
+
+```yaml
+<bot_id>:
+  start_message:
+    text: 'Customizable start message with {user_mention} placeholder'
+    buttons:
+      - - text: 'Button Text'
+          url: 'Button URL'
+    after:
+      - text: 'Additional message'
+        ttl: 3 # Message display time in seconds
+  answer_message:
+    text: 'Response message'
+    ttl: 3 # Response message display time in seconds
+```
+
+#### Key Components
+
+- `<bot_id>`: Unique Telegram bot identifier
+- `start_message`:
+  - `text`: Greeting message with optional `{user_mention}` placeholder
+  - `buttons`: Nested array of buttons with text and URL
+  - `after`: Additional messages with time-to-live (TTL)
+- `answer_message`:
+  - `text`: Automated response message
+  - `ttl`: Time in seconds the message will be displayed
+
+#### Example Configuration
+
+```yaml
+12345678:
+  start_message:
+    text: '👋🏽 Hello, {user_mention}!'
+    buttons:
+      - - text: '📄 Docs'
+          url: 'https://github.com/smkthat/tg-channel-helper'
+      - - text: '👨🏽‍💻 Author'
+          url: 'https://t.me/smkthat'
+    after:
+      - text: '📩 All messages you send will be forwarded to the channel team 🤗'
+        ttl: 3
+  answer_message:
+    text: '✅ Thank you, we received your message!'
+    ttl: 3
+```
+
+#### Getting Started
+
+1. Copy `bot_data.example.yaml` to `bot_data.yaml`
+2. Replace `<bot_id>` with your actual Telegram bot's numeric ID
+3. Customize messages, buttons, and behavior as needed
+
+**Note**: Ensure you keep sensitive information confidential and do not commit `bot_data.yaml` to version control.
+
+### 5. Database Setup
 
 Ensure Redis is installed and running on your system.
 
-### 5. Run the Bot
+### 6. Run the Bot
 
 ```bash
 make run
 ```
 
-### 6. Development Commands
+### 7. Development Commands
 
 - `make test`: Run test suite
 - `make lint`: Run code quality checks
@@ -87,7 +148,11 @@ tg-channel-helper/
 │
 ├── tests/                 # Unit and integration tests
 ├── logs/                  # Application logs
+│
 ├── Makefile               # Build and development commands
+├── .env.example           # Example environment variables
+├── bot_data.example.yaml  # Example bot configuration
+├── default.yaml           # Default configuration
 └── requirements.txt       # Python dependencies
 ```
 
