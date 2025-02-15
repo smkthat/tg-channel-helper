@@ -1,0 +1,14 @@
+12345678:
+  start_message:
+    text: '👋🏽 Hello, {user_mention}!'
+    buttons:
+      - - text: '📄 Docs'
+          url: 'https://github.com/smkthat/tg-channel-helper'
+      - - text: '👨🏽‍💻 Author'
+          url: 'https://t.me/smkthat'
+    after:
+      - text: '📩 All messages you send will be forwarded to the channel team 🤗'
+        ttl: 3
+  answer_message:
+    text: '✅ Thank you, we received your message!'
+    ttl: 3 # sec

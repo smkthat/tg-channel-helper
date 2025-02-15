@@ -1,0 +1,4 @@
+aiogram==3.17.0
+aiogram-media-group==0.5.1
+PyYAML==6.0.2
+redis==5.2.1

@@ -1,0 +1,12 @@
+# Rename this file to default.yaml
+App:
+  debug: false
+Bot:
+  id: 1234567890
+  owner: 1234567890
+  channel: 1234567890
+  admin_chat: 1234567890
+Redis:
+  host: 127.0.0.1
+  port: 6379
+  db: 0
