@@ -1,5 +1,7 @@
 import asyncio
 
+import yaml
+
 from app.configuration.log import get_logger
 from app.loader import start_app
 
@@ -15,7 +17,8 @@ def main():
             KeyboardInterrupt,
             SystemExit,
             AttributeError,
-            FileNotFoundError
+            FileNotFoundError,
+            yaml.YAMLError
     ) as exc:
         LOGGER.error(exc)
         LOGGER.warning("Exit")

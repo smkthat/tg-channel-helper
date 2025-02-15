@@ -114,16 +114,12 @@ class Config:
     def read_yaml(cls, file_path: str) -> dict:
         """Used to read the data from the given configuration file."""
         file_path = os.path.relpath(file_path)
-        LOGGER.debug(f'read configuration file "{file_path}"')
+        LOGGER.debug('read configuration file "%s"', file_path)
         if os.path.isfile(file_path):
             with open(file_path, mode="r", encoding=cls.__ENCODING) as file:
-                try:
-                    return yaml.safe_load(file)
-                except yaml.YAMLError as e:
-                    LOGGER.error(e)
+                return yaml.safe_load(file)
         else:
-            LOGGER.fatal(f'Please, provide "{file_path}" file.')
-            exit(f'Missing file "{file_path}".')
+            raise FileNotFoundError(f'Please, provide "%" file."{file_path}".')
 
     @classmethod
     def dump_config(cls, file_path: str, data: object):
@@ -131,7 +127,7 @@ class Config:
         Used to dump the configuration data to the given
         configuration file.
         """
-        LOGGER.debug(f'dump configuration file "{file_path}')
+        LOGGER.debug('dump configuration file "%s"', file_path)
         with open(file_path, mode='w', encoding=cls.__ENCODING) as file:
             yaml.safe_dump(
                 data=data.__dict__,
