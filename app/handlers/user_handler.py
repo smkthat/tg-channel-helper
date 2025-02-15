@@ -4,7 +4,7 @@ from aiogram import Dispatcher, Bot, F
 from aiogram.enums import ChatType
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import StateFilter
-from aiogram.types import Message
+from aiogram.types import Message, ReactionTypeEmoji
 from aiogram_media_group import media_group_handler
 
 from app.configuration.config_loader import CONFIG
@@ -56,21 +56,32 @@ async def answer_to_user_album(
                 reply_message.message_id
         ):
             for m in messages:
-                await m.copy_to(chat_id=user_id)
+                if _ := await m.copy_to(chat_id=user_id):
+                    await m.react([ReactionTypeEmoji(type='emoji', emoji='✅')])
         else:
             await first_message.answer(
                 '⚠️ Пользователь не найден, сообщение не доставлено')
 
 
-async def answer_to_user(m: Message, bot: Bot,
-                         user_service: UserService) -> None:
+async def answer_to_user(
+        m: Message,
+        bot: Bot,
+        user_service: UserService
+) -> None:
+    text = m.text or m.caption
+
+    if text.startswith('/') and not text.startswith('/start'):
+        await m.answer('❌ Не правильная команда')
+        return
+
     reply_message = m.reply_to_message
     if reply_message.forward_date:
         if user_id := await user_service.get_user(
                 bot.id,
                 reply_message.message_id
         ):
-            await m.copy_to(chat_id=user_id)
+            if _ := await m.copy_to(chat_id=user_id):
+                await m.react([ReactionTypeEmoji(type='emoji', emoji='✅')])
         else:
             await m.answer('⚠️ Пользователь не найден, сообщение не доставлено')
 
