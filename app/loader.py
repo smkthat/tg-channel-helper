@@ -8,16 +8,22 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import SimpleEventIsolation
 from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
 
-from app.configuration.config_loader import CONFIG, BOT_TOKEN_FORMAT, \
+from app.configuration.config_loader import (
+    CONFIG,
+    BOT_TOKEN_FORMAT,
     check_bot_token
+)
 from app.configuration.log import get_logger
 from app.db.database import test_connection, get_db_instance
 from app.handlers.channel_handler import register_channel_handlers
 from app.handlers.menu_handler import register_main_handlers
 from app.handlers.user_handler import register_user_handlers
-from app.middlewares.middleware import DynamicDataProviderMiddleware, \
-    ChatThreadFilterMiddleware, \
-    ServicesProviderMiddleware
+from app.middlewares.middleware import (
+    DynamicDataProviderMiddleware,
+    ChatThreadFilterMiddleware,
+    ServicesProviderMiddleware,
+    BannedMiddleware
+)
 
 LOGGER = get_logger(__name__, 'logs')
 
@@ -54,6 +60,7 @@ async def start_app():
     )
     dp.message.middleware.register(ServicesProviderMiddleware(db))
     dp.message.middleware.register(ChatThreadFilterMiddleware())
+    dp.message.middleware.register(BannedMiddleware())
     dp.message.outer_middleware.register(DynamicDataProviderMiddleware())
     dp.startup.register(on_startup)
 

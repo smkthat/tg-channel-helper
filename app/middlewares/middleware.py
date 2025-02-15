@@ -1,5 +1,6 @@
 import os
 from typing import Any, Awaitable, Callable, Dict, Union
+
 from aiogram import BaseMiddleware, Bot
 from aiogram.enums import ChatType
 from aiogram.types import TelegramObject, Message, CallbackQuery
@@ -79,7 +80,7 @@ class BannedMiddleware(BaseMiddleware):
     ) -> Any:
         is_banned = False
 
-        if event.chat.type == ChatType.SUPERGROUP:
+        if event.chat.type == ChatType.PRIVATE:
             bot: Bot = data['bot']
             user_service: UserService = data['user_service']
             is_banned = await user_service.is_banned(bot.id, event.from_user.id)
