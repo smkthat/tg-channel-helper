@@ -1,9 +1,9 @@
 import dotenv
 from redis.asyncio.client import Redis
+from redis.exceptions import ConnectionError as RedisConnectionError
 
 from app.configuration.config_loader import CONFIG
 from app.configuration.log import get_logger
-from redis.exceptions import ConnectionError as RedisConnectionError
 
 LOGGER = get_logger(__name__, 'logs/redis')
 

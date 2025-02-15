@@ -11,8 +11,14 @@ class UserService:
     def __init__(self, db: Redis):
         self.db = db
 
-    async def get_user(self, bot_id: int, forward_message_id: int) -> Union[None, int]:
-        query = FORWARD_MESSAGE_KEY.format(bot_id=bot_id, forwarded_message_id=forward_message_id)
+    async def get_user(
+            self, bot_id: int,
+            forward_message_id: int
+    ) -> Union[None, int]:
+        query = FORWARD_MESSAGE_KEY.format(
+            bot_id=bot_id,
+            forwarded_message_id=forward_message_id
+        )
         user_id = await self.db.get(query)
         return int(user_id) if user_id else None
 
@@ -32,7 +38,10 @@ class UserService:
         banned_users = await self.get_banned_users(bot_id)
         return int(user_id) in banned_users
 
-    async def set_user_link(self, bot_id: int, message_id: int, user_id: int) -> None:
-        query = FORWARD_MESSAGE_KEY.format(bot_id=bot_id, forwarded_message_id=message_id)
+    async def set_user_link(self, bot_id: int, message_id: int,
+                            user_id: int) -> None:
+        query = FORWARD_MESSAGE_KEY.format(
+            bot_id=bot_id,
+            forwarded_message_id=message_id
+        )
         await self.db.append(query, user_id)
-

@@ -1,8 +1,8 @@
 import os
-import yaml
-import dotenv
-
 from dataclasses import dataclass
+
+import dotenv
+import yaml
 
 from app.configuration.log import get_logger
 from app.halpers.decorators import singleton
@@ -47,8 +47,15 @@ class Config:
         def thread_id(self) -> int:
             return self.admin_chat.get('thread_id')
 
-        def __init__(self, id: int, enabled: bool, owner_id: int, channel_id: int, admin_chat: dict) -> None:
-            self.id = id
+        def __init__(
+                self,
+                _id: int,
+                enabled: bool,
+                owner_id: int,
+                channel_id: int,
+                admin_chat: dict
+        ) -> None:
+            self.id = _id
             self.enabled = enabled
             self.owner_id = owner_id
             self.channel_id = channel_id
@@ -60,7 +67,8 @@ class Config:
         port: int
         db: int
 
-        def __init__(self, db: int, host: str = '127.0.0.1', port: int = 6379) -> None:
+        def __init__(self, db: int, host: str = '127.0.0.1',
+                     port: int = 6379) -> None:
             self.db = db
             self.host = host
             self.port = port
@@ -77,7 +85,7 @@ class Config:
         )
         self.__bots = {
             bot['id']: self.Bot(
-                id=bot['id'],
+                _id=bot['id'],
                 enabled=bot['enabled'],
                 owner_id=bot['owner_id'],
                 channel_id=bot['channel_id'],
@@ -119,7 +127,10 @@ class Config:
 
     @classmethod
     def dump_config(cls, file_path: str, data: object):
-        """Used to dump the configuration data to the given configuration file."""
+        """
+        Used to dump the configuration data to the given
+        configuration file.
+        """
         LOGGER.debug(f'dump configuration file "{file_path}')
         with open(file_path, mode='w', encoding=cls.__ENCODING) as file:
             yaml.safe_dump(
@@ -134,17 +145,22 @@ class Config:
 
 def check_bot_token(bot_id: int) -> bool:
     """
-    Validates the existence and non-emptiness of a bot token environment variable for a given bot ID.
+    Validates the existence and non-emptiness of a bot token environment
+    variable for a given bot ID.
     
     :param bot_id: Integer representing the bot identifier
-    :return: True if the token exists and is non-empty, raises RuntimeError otherwise
+    :return: True if the token exists and is non-empty,
+        raises RuntimeError otherwise
     """
     env_vars = dotenv.dotenv_values()
     required_var = BOT_TOKEN_FORMAT.format(bot_id)
-    
+
     if required_var not in env_vars or not env_vars[required_var]:
-        raise RuntimeError(f'Please, provide {required_var} variable in .env file. See example on .env.template')
-    
+        raise RuntimeError(
+            f'Please, provide {required_var} variable in .env file. '
+            'See example on .env.template'
+        )
+
     return True
 
 

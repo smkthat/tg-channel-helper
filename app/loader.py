@@ -8,13 +8,15 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import SimpleEventIsolation
 from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
 
-from app.configuration.config_loader import CONFIG, BOT_TOKEN_FORMAT, check_bot_token
+from app.configuration.config_loader import CONFIG, BOT_TOKEN_FORMAT, \
+    check_bot_token
 from app.configuration.log import get_logger
 from app.db.database import test_connection, get_db_instance
 from app.handlers.channel_handler import register_channel_handlers
 from app.handlers.menu_handler import register_main_handlers
 from app.handlers.user_handler import register_user_handlers
-from app.middlewares.middleware import DynamicDataProviderMiddleware, ChatThreadFilterMiddleware, \
+from app.middlewares.middleware import DynamicDataProviderMiddleware, \
+    ChatThreadFilterMiddleware, \
     ServicesProviderMiddleware
 
 LOGGER = get_logger(__name__, 'logs')
@@ -62,7 +64,9 @@ async def start_app():
         if check_bot_token(b_data.id) and b_data.enabled:
             bots.append(
                 Bot(
-                    token=dotenv.dotenv_values().get(BOT_TOKEN_FORMAT.format(b_data.id)),
+                    token=dotenv.dotenv_values().get(
+                        BOT_TOKEN_FORMAT.format(b_data.id)
+                    ),
                     default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
                 )
             )

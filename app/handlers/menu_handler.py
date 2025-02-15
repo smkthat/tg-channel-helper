@@ -26,7 +26,8 @@ async def start(m: Message, bot: Bot, state: FSMContext, dynamic_data: dict):
     start_text = dynamic_data['start_message']['text']
     menu = await m.answer(
         text=start_text.format(user_mention=m.from_user.mention_markdown()),
-        reply_markup=get_keyboard_from_data(buttons_data=dynamic_data['start_message'].get('buttons', [[]]))
+        reply_markup=get_keyboard_from_data(
+            buttons_data=dynamic_data['start_message'].get('buttons', [[]]))
     )
     await state.update_data(menu_id=menu.message_id)
     await bot.send_chat_action(
@@ -34,16 +35,25 @@ async def start(m: Message, bot: Bot, state: FSMContext, dynamic_data: dict):
         action=ChatAction.TYPING
     )
     if dynamic_data['start_message'].get('after', None):
-        await asyncio.sleep(delay=dynamic_data['start_message']['after'][-1]['ttl'])
+        await asyncio.sleep(
+            delay=dynamic_data['start_message']['after'][-1]['ttl'])
         await m.answer(text=dynamic_data['start_message']['after'][-1]['text'])
 
 
 async def start_admin(m: Message, bot: Bot, state: FSMContext):
     if state_data := await state.get_data():
         if tmp_message_id := state_data.get('tmp_message_id'):
-            await delete_or_edit_message(chat_id=m.chat.id, message_id=tmp_message_id, bot=bot)
+            await delete_or_edit_message(
+                chat_id=m.chat.id,
+                message_id=tmp_message_id,
+                bot=bot
+            )
 
-        await delete_or_edit_message(chat_id=m.chat.id, message_id=m.message_id, bot=bot)
+        await delete_or_edit_message(
+            chat_id=m.chat.id,
+            message_id=m.message_id,
+            bot=bot
+        )
         await delete_ui_messages(bot=bot, state=state)
 
     await delete_menu(m, bot, state)
@@ -68,10 +78,18 @@ async def start_admin_call(c: CallbackQuery, bot: Bot, state: FSMContext):
     await state.update_data(menu_id=menu.message_id)
 
 
-async def delete_menu(message_or_call: Union[Message, CallbackQuery], bot: Bot, state: FSMContext):
+async def delete_menu(
+        message_or_call: Union[Message, CallbackQuery],
+        bot: Bot,
+        state: FSMContext
+):
     state_data = await state.get_data()
     if menu_id := state_data.get('menu_id'):
-        await delete_or_edit_message(chat_id=message_or_call.chat.id, message_id=menu_id, bot=bot)
+        await delete_or_edit_message(
+            chat_id=message_or_call.chat.id,
+            message_id=menu_id,
+            bot=bot
+        )
 
 
 async def channel(c: CallbackQuery):

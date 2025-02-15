@@ -1,0 +1,14 @@
+[MESSAGES CONTROL]
+
+disable=C0114,  # missing-module-docstring
+        C0115,  # missing-class-docstring
+        C0116   # missing-function-docstring
+
+[FORMAT]
+max-line-length=80
+
+[BASIC]
+good-names=i,j,k,ex,Run,_,id
+
+[DESIGN]
+max-args=6
