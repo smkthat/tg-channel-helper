@@ -1,3 +1,4 @@
+# Rename this file to bot_data.yaml
 12345678:
   start_message:
     text: '👋🏽 Hello, {user_mention}!'
