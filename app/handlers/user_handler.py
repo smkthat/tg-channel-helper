@@ -81,7 +81,7 @@ async def answer_to_user(
                 reply_message.message_id
         ):
             if _ := await m.copy_to(chat_id=user_id):
-                await m.react([ReactionTypeEmoji(type='emoji', emoji='✅')])
+                await m.react([ReactionTypeEmoji(type='emoji', emoji='👌')])
         else:
             await m.answer('⚠️ Пользователь не найден, сообщение не доставлено')
 
