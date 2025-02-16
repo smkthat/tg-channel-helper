@@ -1,6 +1,7 @@
 .idea
 /.env
 /default.yaml
+/bot_data.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
